@@ -66,15 +66,6 @@ class Cache(object):
     def get_by_ttl(self, ttl):
         return self.backend.get_by_ttl(ttl)
 
-    __getitem__ = get
-
-    def __setitem__(self, key, value):
-        return self.set(key, *value)
-
-    __delitem__ = delete
-
-    __contains__ = exists
-
     def _load_backend(self, name, **config):
         module = import_module('freon.backends')
         backend_cls = getattr(module, name.capitalize())
