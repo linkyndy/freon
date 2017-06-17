@@ -1,5 +1,4 @@
 from importlib import import_module
-import time
 
 
 class Cache(object):
@@ -24,9 +23,10 @@ class Cache(object):
     def get(self, key):
         value, _ = self.backend.get(key)
 
-        if value:
-            return self.serializer.loads(value)
-        return value
+        if value is None:
+            return None
+
+        return self.serializer.loads(value)
 
     def set(self, key, value, ttl=None):
         lock = self.backend.get_lock(key)
@@ -35,14 +35,17 @@ class Cache(object):
             return None
 
         try:
-            value = value_or_fn() if callable(value_or_fn) else value_or_fn
-            ttl = ttl or self.default_ttl
+            if callable(value):
+                value = value()
+            if not ttl:
+                ttl = self.default_ttl
+
             result = self.backend.set(key, self.serializer.dumps(value), ttl)
             return value if result else None
         finally:
             lock.release()
 
-    def get_or_create(self, key, value_or_fn, ttl=None):
+    def get_or_create(self, key, value, ttl=None):
         existing_value, existing_expired = self.backend.get(key)
 
         if not existing_expired:
