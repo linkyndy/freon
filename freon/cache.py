@@ -61,8 +61,8 @@ class Cache(object):
         return self.backend.get_by_ttl(ttl)
 
     def _load_backend(self, name, **config):
-        module = import_module('freon.backends')
-        backend_cls = getattr(module, name.capitalize())
+        module = import_module("freon.backends.%s" % name)
+        backend_cls = getattr(module, "%sBackend" % name.capitalize())
         return backend_cls(**config)
 
     def _load_serializer(self, name):

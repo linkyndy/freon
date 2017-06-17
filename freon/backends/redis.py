@@ -1,24 +1,10 @@
-import redis
+from __future__ import absolute_import
+from redis import StrictRedis
+
+from freon.backends.base import BaseBackend
 
 
-class Base(object):
-    def get(self, key):
-        raise NotImplementedError()
-
-    def set(self, key, value, ttl):
-        raise NotImplementedError()
-
-    def delete(self, key):
-        raise NotImplementedError()
-
-    def exists(self, key):
-        raise NotImplementedError()
-
-    def get_by_ttl(self, ttl):
-        raise NotImplementedError()
-
-
-class Redis(Base):
+class RedisBackend(BaseBackend):
     def __init__(self, host='localhost', port=6379, db=0, password=None, **kwargs):
         self.host = host
         self.port = port
@@ -32,11 +18,11 @@ class Redis(Base):
     @property
     def connection(self):
         if not self._connection:
-            self._connection = redis.StrictRedis(host=self.host,
-                                                 port=self.port,
-                                                 db=self.db,
-                                                 password=self.password,
-                                                 **self.config)
+            self._connection = StrictRedis(host=self.host,
+                                           port=self.port,
+                                           db=self.db,
+                                           password=self.password,
+                                           **self.config)
         return self._connection
 
     def get_lock(self, name):
@@ -97,7 +83,7 @@ LUA_GET = """
         local is_expired = expires_at < time
         return {value, is_expired}
     else
-        return {false, false}
+        return {false, true}
     end
 """
 
