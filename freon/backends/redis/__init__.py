@@ -17,7 +17,8 @@ class RedisBackend(BaseBackend):
         return self.client.lock("%s_lock" % name, timeout=1)
 
     def get(self, key):
-        return self.run_script('get', keys=[key, self.zset_key])
+        value, expired = self.run_script('get', keys=[key, self.zset_key])
+        return (value, bool(expired))
 
     def set(self, key, value, ttl):
         return self.run_script('set', keys=[key, self.zset_key], args=[value, ttl])
@@ -26,7 +27,7 @@ class RedisBackend(BaseBackend):
         return self.run_script('delete', keys=[key, self.zset_key])
 
     def exists(self, key):
-        return self.run_script('exists', keys=[key])
+        return self.client.exists(key)
 
     def get_expired(self):
         return self.run_script('get_expired', keys=[self.zset_key])

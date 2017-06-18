@@ -45,11 +45,11 @@ class Cache(object):
         finally:
             lock.release()
 
-    def get_or_create(self, key, value, ttl=None):
+    def get_or_set(self, key, value, ttl=None):
         existing_value, existing_expired = self.backend.get(key)
 
         if not existing_expired:
-            return existing_value
+            return self.serializer.loads(existing_value)
 
         result = self.set(key, value, ttl)
         return result if result else None
@@ -59,6 +59,9 @@ class Cache(object):
 
     def exists(self, key):
         return self.backend.exists(key)
+
+    def get_expired(self):
+        return self.backend.get_expired()
 
     def get_by_ttl(self, ttl):
         return self.backend.get_by_ttl(ttl)
