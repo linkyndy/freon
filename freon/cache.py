@@ -45,14 +45,14 @@ class Cache(object):
         finally:
             lock.release()
 
-    def get_or_set(self, key, value, ttl=None):
-        existing_value, existing_expired = self.backend.get(key)
+    def get_or_set(self, key, new_value, ttl=None):
+        value, expired = self.backend.get(key)
 
-        if not existing_expired:
-            return self.serializer.loads(existing_value)
+        if value is None or expired:
+            result = self.set(key, new_value, ttl)
+            return result if result else None
 
-        result = self.set(key, value, ttl)
-        return result if result else None
+        return self.serializer.loads(value)
 
     def delete(self, key):
         return self.backend.delete(key)
