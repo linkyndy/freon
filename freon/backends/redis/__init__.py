@@ -8,7 +8,7 @@ from freon.backends.base import BaseBackend
 
 class RedisBackend(BaseBackend):
     def __init__(self, host='localhost', port=6379, db=0, password=None, **kwargs):
-        self.zset_key = 'freon:ttls'
+        self.ttl_key = kwargs.pop('ttl_key', 'freon:cache:ttls')
         self.client = redis.StrictRedis(host=host, port=port, db=db,
                                         password=password, **kwargs)
         self.register_scripts()
@@ -17,23 +17,23 @@ class RedisBackend(BaseBackend):
         return self.client.lock("%s_lock" % name, timeout=1)
 
     def get(self, key):
-        value, expired = self.run_script('get', keys=[key, self.zset_key])
+        value, expired = self.run_script('get', keys=[key, self.ttl_key])
         return (value, bool(expired))
 
     def set(self, key, value, ttl):
-        return self.run_script('set', keys=[key, self.zset_key], args=[value, ttl])
+        response = self.run_script('set', keys=[key, self.ttl_key], args=[value, ttl])
 
     def delete(self, key):
-        return self.run_script('delete', keys=[key, self.zset_key])
+        response = self.run_script('delete', keys=[key, self.ttl_key])
 
     def exists(self, key):
         return self.client.exists(key)
 
     def get_expired(self):
-        return self.run_script('get_expired', keys=[self.zset_key])
+        return self.run_script('get_expired', keys=[self.ttl_key])
 
     def get_by_ttl(self, ttl):
-        return self.run_script('get_by_ttl', keys=[self.zset_key], args=[ttl])
+        return self.run_script('get_by_ttl', keys=[self.ttl_key], args=[ttl])
 
     def register_scripts(self):
         script_dir = os.path.join(os.path.dirname(__file__), 'scripts')
