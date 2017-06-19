@@ -22,9 +22,11 @@ class RedisBackend(BaseBackend):
 
     def set(self, key, value, ttl):
         response = self.run_script('set', keys=[key, self.ttl_key], args=[value, ttl])
+        return bool(response)
 
     def delete(self, key):
         response = self.run_script('delete', keys=[key, self.ttl_key])
+        return bool(response)
 
     def exists(self, key):
         return self.client.exists(key)
