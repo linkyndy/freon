@@ -72,43 +72,6 @@ class Cache(object):
         return backend_cls(**config)
 
     def _load_serializer(self, name):
-
-#
-#
-# config = {
-#     'backend': 'redis',
-#     'host': 'localhost',
-#     'serializer': 'msgpack'
-# }
-#
-# cache = Cache(backend='redis', serializer='msgpack')
-# cache.set('bla', 'dddd', 43)
-#
-# redis_backend = RedisBackend(host='localhost')
-# msgpack_serializer = import_module('msgpack')
-# cache = Cache(backend=redis_backend, serializer=msgpack_serializer)
-# cache.set('bla', 'dddd', 43)
-#
-# cache = Cache()
-# cache.configure(config)
-#
-# cache = Cache()
-# cache.config.from_dict(config)
-#
-# cache = Cache.from_config(config)
-
-
-
-    # def get_or_set(self, key, value, ttl):
-    #     self.get(key)
-    #     if no_key:
-    #         acquire_lock_no_blocking
-    #
-    #         if lock:
-    #             self.set(key, value, ttl)
-    #             release_lock
-    #         else:
-    #             return_old_data
         module = import_module("freon.serializers.%s" % name)
         serializer_cls = getattr(module, "%sSerializer" % name.capitalize())
         return serializer_cls()
