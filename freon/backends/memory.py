@@ -14,7 +14,6 @@ class MemoryBackend(BaseBackend):
         self.store[self.ttl_key] = {}
 
     def get_lock(self, _):
-        # return self.client.lock("%s_lock" % name, timeout=1)
         return threading.Lock()
 
     def get(self, key):
