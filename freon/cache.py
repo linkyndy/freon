@@ -72,7 +72,6 @@ class Cache(object):
         return backend_cls(**config)
 
     def _load_serializer(self, name):
-        return import_module(name)
 
 #
 #
@@ -110,3 +109,6 @@ class Cache(object):
     #             release_lock
     #         else:
     #             return_old_data
+        module = import_module("freon.serializers.%s" % name)
+        serializer_cls = getattr(module, "%sSerializer" % name.capitalize())
+        return serializer_cls()
