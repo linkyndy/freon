@@ -3,7 +3,7 @@ import time
 
 from freon.backends.memory import MemoryBackend
 
-from . import BaseTestCase
+from tests import BaseTestCase
 
 
 class MemoryTestCase(BaseTestCase):

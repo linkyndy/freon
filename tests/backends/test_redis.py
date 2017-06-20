@@ -4,7 +4,7 @@ import time
 
 from freon.backends.redis import RedisBackend
 
-from . import BaseTestCase
+from tests import BaseTestCase
 
 
 class RedisTestCase(BaseTestCase):
