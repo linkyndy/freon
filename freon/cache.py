@@ -7,15 +7,14 @@ class Cache(object):
 
     :param backend: Name of backend to connect to. Can be one of ``redis`` or
      ``memory``
-    :param serializer: Name of serializer used to serialize/deserialized cached
-     values. Can be the name of any module that provides ``dumps()`` and
-     ``loads()``
+    :param serializer: Name of serializer used to serialize/deserialize cached
+     values. Can be one of ``msgpack``, ``pickle`` or ``json``
     """
 
     def __init__(self, backend='redis', serializer='msgpack', default_ttl=3600,
-                 **kwargs):
+                 custom_encoder=None, custom_decoder=None, **kwargs):
         self.backend = self._load_backend(backend, **kwargs)
-        self.serializer = self._load_serializer(serializer)
+        self.serializer = self._load_serializer(serializer, custom_encoder, custom_decoder)
         self.default_ttl = default_ttl
 
     # TODO: configure if don't want to be constructivist and always return what
@@ -71,7 +70,7 @@ class Cache(object):
         backend_cls = getattr(module, "%sBackend" % name.capitalize())
         return backend_cls(**config)
 
-    def _load_serializer(self, name):
+    def _load_serializer(self, name, *config):
         module = import_module("freon.serializers.%s" % name)
         serializer_cls = getattr(module, "%sSerializer" % name.capitalize())
-        return serializer_cls()
+        return serializer_cls(*config)

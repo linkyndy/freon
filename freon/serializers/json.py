@@ -9,7 +9,7 @@ from freon.serializers.base import BaseSerializer
 
 class JsonSerializer(BaseSerializer):
     def dumps(self, data):
-        return json.dumps(data)
+        return json.dumps(data, default=self.custom_encoder)
 
     def loads(self, data):
-        return json.loads(data)
+        return json.loads(data, object_hook=self.custom_decoder)
