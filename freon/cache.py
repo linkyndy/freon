@@ -31,7 +31,7 @@ class Cache(object):
     def set(self, key, value, ttl=None):
         lock = self.backend.get_lock(key)
 
-        if not lock.acquire(blocking=False):
+        if not lock.acquire(False):
             return None
 
         try:
