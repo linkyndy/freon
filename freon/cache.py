@@ -89,7 +89,9 @@ class Cache(object):
         try:
             if callable(value):
                 value = value()
-            if not ttl:
+            if callable(ttl):
+                ttl = ttl(value)
+            elif not ttl:
                 ttl = self.default_ttl
 
             result = self.backend.set(key, self.serializer.dumps(value), ttl)
