@@ -124,8 +124,9 @@ class GetOrSetTests(CacheTestCase):
 
     def test_with_existing_expired_key_return_none_if_unsuccessful(self, mock_set):
         self.mock_backend.get.return_value = ('bar', True)
+        self.mock_serializer.loads.return_value = 'bar'
         mock_set.return_value = None
-        assert self.cache.get_or_set('foo', 'baz') is None
+        assert self.cache.get_or_set('foo', 'baz') == 'bar'
 
     def test_with_existing_not_expired_key_does_not_call_set(self, mock_set):
         self.mock_backend.get.return_value = ('bar', False)

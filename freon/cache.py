@@ -117,7 +117,7 @@ class Cache(object):
 
         if value is None or expired:
             result = self.set(key, new_value, ttl)
-            return result if result else None
+            return result if result else value
 
         return self.serializer.loads(value)
 
