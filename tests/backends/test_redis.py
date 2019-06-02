@@ -17,7 +17,7 @@ class RedisTestCase(BaseTestCase):
 
     def set_key(self, key, value, ttl=0):
         self.client.set(key, value)
-        self.client.zadd('freon:cache:test_ttl', time.time() + ttl, key)
+        self.client.zadd('freon:cache:test_ttl', {key: time.time() + ttl})
 
     def assert_set(self, key, value, ttl):
         assert self.client.get(key) == value

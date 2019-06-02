@@ -30,7 +30,8 @@ class RedisBackend(BaseBackend):
         return bool(response)
 
     def exists(self, key):
-        return self.client.exists(key)
+        response = self.client.exists(key)
+        return bool(response)
 
     def get_expired(self):
         return self.run_script('get_expired', keys=[self.ttl_key])
