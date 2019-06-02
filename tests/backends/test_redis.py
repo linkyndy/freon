@@ -13,7 +13,7 @@ class RedisTestCase(BaseTestCase):
         self.client = redis.StrictRedis(db=15, decode_responses=True)
 
     def tearDown(self):
-        self.client.flushall()
+        self.client.flushdb()
 
     def set_key(self, key, value, ttl=0):
         self.client.set(key, value)
