@@ -1,5 +1,5 @@
 import pytest
-import redislite
+import redis
 import time
 
 from freon.backends.redis import RedisBackend
@@ -9,11 +9,8 @@ from tests import BaseTestCase
 
 class RedisTestCase(BaseTestCase):
     def setUp(self):
-        self.backend = RedisBackend(ttl_key='freon:cache:test_ttl')
-        # Swap backend with disposable Redis server and register scripts on it
-        self.client = redislite.StrictRedis()
-        self.backend.client = self.client
-        self.backend.register_scripts()
+        self.backend = RedisBackend(db=15, ttl_key='freon:cache:test_ttl')
+        self.client = redis.StrictRedis(db=15, decode_responses=True)
 
     def tearDown(self):
         self.client.flushall()
