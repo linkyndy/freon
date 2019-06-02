@@ -10,7 +10,8 @@ class RedisBackend(BaseBackend):
     def __init__(self, host='localhost', port=6379, db=0, password=None, **kwargs):
         self.ttl_key = kwargs.pop('ttl_key', 'freon:cache:ttls')
         self.client = redis.StrictRedis(host=host, port=port, db=db,
-                                        password=password, **kwargs)
+                                        password=password, decode_responses=True,
+                                        **kwargs)
         self.register_scripts()
 
     def get_lock(self, name):
