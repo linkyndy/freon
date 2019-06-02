@@ -5,9 +5,9 @@ class Cache(object):
     """
     Connection to a cache backend
 
-    :param backend: (optional) Name of backend to connect to. Can be one of ``redis`` or ``memory``. Defaults to ``redis``.
+    :param backend: (optional) Name of backend to connect to. Can be one of ``redis`` or ``memory``. Defaults to ``memory``.
     :type backend: string
-    :param serializer: (optional) Name of serializer used to serialize/deserialize cached values. Can be one of ``msgpack``, ``pickle`` or ``json``. Defaults to ``msgpack``.
+    :param serializer: (optional) Name of serializer used to serialize/deserialize cached values. Can be one of ``msgpack``, ``pickle`` or ``json``. Defaults to ``json``.
     :type serializer: string
     :param default_ttl: (optional) Default TTL applied to items that don't have one associated. Value is expressed in seconds. Defaults to ``3600``.
     :type default_ttl: integer
@@ -38,7 +38,7 @@ class Cache(object):
         """
         Retrieves a cached entry by given key.
 
-        If the key doesn't exist, ``None`` is returned. If they key exists but
+        If the key doesn't exist, ``None`` is returned. If the key exists but
         is expired, the cached entry is still returned.
 
         :param key: Key of cached entry to be retrieved
