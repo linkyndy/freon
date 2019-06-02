@@ -9,4 +9,4 @@ class MsgpackSerializer(BaseSerializer):
         return msgpack.dumps(data, use_bin_type=True, default=self.custom_encoder)
 
     def loads(self, data):
-        return msgpack.loads(data, encoding='utf-8', object_hook=self.custom_decoder)
+        return msgpack.loads(data, raw=False, object_hook=self.custom_decoder)
