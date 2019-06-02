@@ -25,7 +25,7 @@ class Cache(object):
       None
     """
 
-    def __init__(self, backend='redis', serializer='msgpack', default_ttl=3600,
+    def __init__(self, backend='memory', serializer='json', default_ttl=3600,
                  custom_encoder=None, custom_decoder=None, **kwargs):
 
         self.backend = self._load_backend(backend, **kwargs)
