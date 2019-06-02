@@ -1,0 +1,18 @@
+dist: xenial
+language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+install:
+  - pip install .
+script:
+  - pytest
+deploy:
+  provider: pypi
+  user: linkyndy
+  password:
+    secure: "UD85G9zG7z1bE07tK/FlWvOC5GCrvMrRk22Q4jmLVvD6mJWPlsjVKvcu+P0UY8ioJYocwLzIZ8acyXCGvxjknjcyR2WbswPQK5h1bjtUFDt8oNmUnrRDajphKVbttGc2IID7/pENmJnV4dkatyfnr4wybfGBp9yOxdOBykV2VqBbnkr+lHB0CaKdE4RHBT2t9MdxFw/TXKjJNf7ng8nrsNwsF0u1DSZFbm99wXZEikvOPcVBpQCCnkbFvsOZVV7ZIblkqTfBa72VIJMM0pqudfpHOgqHINWsJaYV43N3xhDO3d24+eBp+1VaXmqd1mGp+lgasYs+uOFbjrrxz+DK57pWXMjNa5BBMzbaWX2XLZehTfeSQsk/4wIIMdi2lkBgypbttd7ZbCe0C99n7ZSehapLHl6y9fK1cCwMqYSEHENqs31e5YnnGROsYqcC42E7ZT+hm0F/1gvHY8bU0DyZZg9Vn+AWrNCWIFnoK9uEVDyS1p58cqzvHZci106aOsM3CniqF1ew5IT+poWCPtl4v1Skd4bUVlnY1B1wwZHa74KMlrQ0ySRk59GVJ0EAVygyITahS4UBtqLs3npHmSSOrOut9yEChW+CpB6V49PnZVM4Be+Td2XR3KNHYbS525xUTx6m6g+gCwkh8wlc/VktaZHJRqA+IoDVrm2a5nWiZxo="
+  on:
+    tags: true
