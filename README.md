@@ -1,6 +1,6 @@
 # freon
 
-[![Build Status](https://travis-ci.org/linkyndy/freon.svg?branch=master)](https://travis-ci.org/linkyndy/freon)
+[![Build Status](https://travis-ci.com/linkyndy/freon.svg?branch=master)](https://travis-ci.com/linkyndy/freon)
 
 Keeps your cached data fresh just as freon keeps your food fresh in the fridge.
 
